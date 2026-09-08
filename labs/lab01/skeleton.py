@@ -44,6 +44,34 @@ def read_test_cases(path: str) -> list[TestCase]:
 
     return test_cases
 
+def fast_mod(x, y, m):
+
+    i = 1
+    result = 1
+    prevRemainder = x % m
+    if y & i == i:
+        result = (result * prevRemainder) % m
+
+    while i in range(y):
+        i = 2 * i
+        currRemainder = (prevRemainder ** 2) % m
+
+        if y & i == i:
+            result = (result * currRemainder) % m
+        prevRemainder = currRemainder
+
+    return result
+
+def get_shared_key(g, n, a, b):
+    capA = fast_mod(g, a, n)
+    capB = fast_mod(g, b, n)
+
+    keyA = fast_mod(capB, a, n)
+    keyB = fast_mod(capA, b, n)
+
+    if (keyA == keyB): 
+        return keyA
+
 def main() -> None:
     if len(sys.argv) != 2:
         print(f"Usage: python3 {sys.argv[0]} <data_filename.txt>")
@@ -66,6 +94,12 @@ def main() -> None:
         print(f"  a   = {tc.a}")
         print(f"  b   = {tc.b}")
         print(f"  key = {tc.key}")
+        print()
+
+
+    for i, tc in enumerate(test_cases, start=1):
+        print(f"Test case {i}:")
+        print(get_shared_key(tc.g, tc.n, tc.a, tc.b) == tc.key)
         print()
 
 main()
