@@ -62,6 +62,15 @@ def fast_mod(x, y, m):
 
     return result
 
+def recursive_fast_mod(b, e, m):
+    if (e == 1):
+        return b % m;
+    elif (e % 2 != 0):
+        return b * (fast_mod(b, e / 2, m) ** 2)
+    else:
+        return (fast_mod(b, e/ 2, m)) ** 2
+ 
+
 def get_shared_key(g, n, a, b):
     capA = fast_mod(g, a, n)
     capB = fast_mod(g, b, n)
@@ -101,5 +110,8 @@ def main() -> None:
         print(f"Test case {i}:")
         print(get_shared_key(tc.g, tc.n, tc.a, tc.b) == tc.key)
         print()
+
+
+    print(recursive_fast_mod(10, 89, 2026))
 
 main()
